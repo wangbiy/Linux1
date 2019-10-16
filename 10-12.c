@@ -11,7 +11,7 @@ int main()
 	{
 		printf("I am a child : pid:%d ppid:%d\n",getpid(),getppid());
 	}
-	else
+	else//father
 		printf("I am a parent : pid:%d ppid:%d\n",getpid(),getppid());
 	sleep(1);
 }
