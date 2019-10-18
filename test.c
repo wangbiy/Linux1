@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#一个僵尸进程的例子
+//一个僵尸进程的例子
 int main()
 {
 	pid_t id=fork();
