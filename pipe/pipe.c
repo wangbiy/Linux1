@@ -3,6 +3,7 @@
 #include <string.h>
 int main()
 {
+
 	int fd[2]={0};
 	pipe(fd);
 	pid_t id=fork();
