@@ -56,18 +56,25 @@ std::queue<char*>& pipe_num()//实现管道，判断是否有管道符，具有�
 	return q;
 }
 //重定向
-void diredict(char* t)
+void diredict(char* buf)
 {
-	char* ptr=t;
+	char* ptr=buf;
 	char* file=NULL;
+	int flag=0;//1--清空重定向，2---追加
 	int fd;
 	while(*ptr!='\0')
 	{
 		if(*ptr=='>')
 		{
 			*ptr='\0';
+			flag=1;
 			ptr++;
-			while(*ptr==' ')
+			if(*ptr=='>')
+			{
+				flag=2;
+				ptr++;
+			}
+			while((*ptr!=' ')&&(*ptr!='\0'))//将>符号后的空白字符走完，直到文件名的起始位置
 			{
 				ptr++;
 			}
@@ -76,11 +83,20 @@ void diredict(char* t)
 			{
 				ptr++;
 			}
+			*ptr='\0';
 		}
 		ptr++;
 	}
-	fd=open(file,O_CREAT|O_WRONLY,0644);
-	dup2(fd,1);
+	if(flag==1)
+	{
+		fd=open(file,O_CREAT|O_WRONLY| O_TRUNC,0644);
+		dup2(fd,1);//重定向的文件描述符不会随着程序而初始化
+	}
+	else if(flag==2)
+	{
+		fd=open(file,O_CREAT|O_WRONLY| O_APPEND,0644);
+		dup2(fd,1);//重定向的文件描述符不会随着程序而初始化
+	}
 	close(fd);
 }
 //进程替换
